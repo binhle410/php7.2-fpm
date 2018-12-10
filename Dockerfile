@@ -180,9 +180,8 @@ RUN set -ex \
         echo 'pm.start_servers = 1'; \
         echo 'request_terminate_timeout = 65s'; \
         echo 'pm.max_requests = 1000'; \
-        echo 'catch_workers_output = yes'; \
-
-        echo 'clear_env = no'; \        
+        echo 'catch_workers_output = yes'; \        
+        
     } | tee /usr/local/etc/php-fpm.d/www.conf \
     && mkdir -p /usr/local/php/php/auto_prepends \
     && { \
@@ -203,6 +202,7 @@ RUN set -ex \
         echo 'log_errors = On'; \
         echo 'error_log = /dev/stderr'; \
         echo 'auto_prepend_file = /usr/local/php/php/auto_prepends/default_prepend.php'; \
+        echo "date.timezone = Asia/Singapore"; \
     } | tee /usr/local/etc/php/conf.d/php.ini \
     ;
 
