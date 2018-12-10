@@ -182,7 +182,6 @@ RUN set -ex \
         echo 'pm.max_requests = 1000'; \
         echo 'catch_workers_output = yes'; \
 
-        echo '[ENV_VARS]'; \
         echo 'clear_env = no'; \        
     } | tee /usr/local/etc/php-fpm.d/www.conf \
     && mkdir -p /usr/local/php/php/auto_prepends \
