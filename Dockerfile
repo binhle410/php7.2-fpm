@@ -110,6 +110,8 @@ RUN set -ex; \
     rm -rf newrelic-php5* nr.tar.gz; \
     echo "extension=newrelic.so" > /usr/local/etc/php/conf.d/newrelic.ini;
 
+RUN cd /root; \
+    curl -sS https://getcomposer.org/installer -o composer-setup.php;
 
 # Now that all the modules are built/downloaded, use the original php:7.2-fpm image and
 # install only the runtime dependencies with the new modules and config files.
@@ -120,6 +122,7 @@ WORKDIR /
 RUN set -ex ; \
     \
     apt-get update && apt-get install -y --no-install-recommends \
+        git \ 
         libc-client2007e \
         libgpgme11 \
         libicu57 \
@@ -140,6 +143,7 @@ RUN set -ex ; \
 
 COPY --from=builder /usr/local/lib/php/extensions/no-debug-non-zts-20170718/ /usr/local/lib/php/extensions/no-debug-non-zts-20170718/
 COPY --from=builder /usr/local/etc/php/conf.d/ /usr/local/etc/php/conf.d/
+COPY --from=builder /root/composer-setup.php /root/
 
 RUN pear install --alldeps \
         Auth_SASL \
@@ -205,6 +209,8 @@ RUN set -ex \
         echo "date.timezone = Asia/Singapore"; \
     } | tee /usr/local/etc/php/conf.d/php.ini \
     ;
+
+RUN php ~/composer-setup.php --install-dir=/usr/local/bin --filename=composer;
 
 EXPOSE 9000
 
